@@ -1,0 +1,270 @@
+
+* {
+    box-sizing: border-box;
+    --CSS-width: 30vw;
+    &:focus {
+        outline: 0;
+    }
+}
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+style {
+    /* <style contentenditable> */   
+    display: block;
+    padding: 0.5em;
+    border: solid 1px lightgrey;   
+
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre;
+    text-wrap: wrap;
+}
+
+#side-styles {
+    height: 100vh;
+    width: var(--CSS-width);
+    position: fixed;
+    right: 0;
+    top: 0;
+    overflow-y: scroll;
+}
+
+h1 {
+    font-size: 10rem;
+}
+
+.slide {
+    width: calc(100vw - var(--CSS-width));
+    height: 100vh;
+    position: relative;
+    
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+
+/* --- */
+
+
+.slide:first-of-type {
+    counter-reset: slide;
+}
+.slide::after {
+    counter-increment: slide;
+    content: "Slide " counter(slide);
+    font-size: 1em;
+    position: absolute;
+    bottom: 1em;
+}
+
+
+/* --- */
+
+
+h2 {
+    font-size: 3em;
+    position: absolute;
+    top: 0;
+}
+
+div {
+    border: 1px solid black;
+    /*padding: 1em; Comment out in a bit;*/
+    margin: 1em;
+    min-width: 5em;
+    overflow: visible;
+    position: relative;
+
+    &::before {
+        position: absolute;
+        font-size: 0.7em;
+        text-wrap: nowrap;
+        top: -1.1em;
+        left: 0;
+    }
+    &:has(input):hover {
+        box-shadow: 3px 3px lightgrey;
+    }
+}
+#checkbox-demo::before {
+    content: "div#checkbox-demo"
+}
+
+#checkbox1:checked {
+    outline: 3px solid red;
+}
+
+label {
+    display: block;
+    padding: 1em;
+    width: 100%;
+    text-align: center;
+}
+
+div:has(input:checked) {
+   background: lightgrey; 
+}
+
+input[type="checkbox"] {
+    display: none;
+}
+
+
+/* --- */
+
+
+#checkboxA::before {
+    content: "div#checkboxA";
+}
+#checkboxB::before {
+    content: "div#checkboxB";
+}
+#A-and-B::before {
+    content: "div#A-and-B";
+}
+#A-or-B::before {
+    content: "div#A-or-B";
+}
+#A-xor-B::before {
+    content: "div#A-xor-B";
+}
+.break {
+    height: 0;
+    flex-basis: 100%;
+}
+
+div input + label::after {
+    content: " = 0";
+}
+div input:checked + label::after {
+    content: " = 1";
+}
+
+div label:first-child::after {
+    content: "0";
+}
+div#checkboxA:has(input:checked) ~ div#checkboxB:has(input:checked) ~ div#A-and-B label::after {
+    content: "1";
+}
+div#checkboxA:has(input:checked) , div#checkboxB:has(input:checked) {
+    & ~ div#A-or-B label::after, & ~ div#A-xor-B label::after {
+        content: "1";
+    }
+}
+div#checkboxA:has(input:checked) ~ div#checkboxB:has(input:checked) ~ div#A-xor-B label::after {
+    content: "0";
+}
+
+
+/* --- */
+
+
+.recursionA::before {
+    content: "div.recursionA";
+}
+.recursionB::before {
+    content: "div.recursionB";
+}
+.recursion {
+    display: inline-block;
+}
+
+.slide:has(.recursion) {
+    --i: 0;
+    --b: -1;
+}
+
+.recursion::after {
+    content: var(--i);
+}
+
+.recursionA {
+    --a: var(--b) + 1;
+    --i: var(--a);
+}
+.recursionB {
+    --b: var(--a) + 1;
+    --i: var(--b);
+}
+.recursion::after {
+    display: inline-block;
+    padding: 1em;
+    counter-reset: counter-i calc(var(--i))
+        counter-a calc(var(--a))
+        counter-b calc(var(--b));
+    /*content: "i = " counter(counter-i, decimal) "; a = " counter(counter-a, decimal) "; b = " counter(counter-b, decimal); Comment out;*/
+}
+
+
+/* --- */
+
+
+#adder {
+/*visibility: hidden;*/
+#first-number::before {
+    content: "div#first-number";
+}
+#second-number::before {
+    content: "div#second-number";
+}
+#output::before {
+    content: "div#output";
+}
+
+.number {
+    height: 7em;
+    flex-basis: 100%;
+    transform: translate(0);
+}
+div div {
+    position: fixed;
+    top: 0;
+    left: calc(7em * (var(--i)));
+    
+    width: 5em;
+    height: 5em;
+    &::after {
+        content: counter(counter-i, decimal); comment out;
+    }
+}
+
+#first-number {
+    --value: var(--n1);
+}
+#second-number {
+    --value: var(--n2);
+}
+#output {
+    --value: calc(var(--n1) + var(--n2));
+}
+#operation:has(:checked) ~ #output {
+    --value: calc(var(--n1) - var(--n2));
+}
+div div::after {
+    --result: mod(round(down, var(--value) / pow(2, 7 - (var(--i))), 1), 2);
+    counter-reset: counter-result calc(var(--result));
+    content: counter(counter-result, decimal);
+
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    text-align: center;
+    align-content: center;
+}
+
+#operation input ~ label::after {
+    content: "+";
+}
+#operation:has(:checked) {
+    background: white;
+}
+#operation input:checked ~ label::after {
+    content: "-";
+}
+}

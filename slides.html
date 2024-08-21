@@ -19,6 +19,7 @@ body {
 }
 
 style {
+    /* <style contentenditable> */   
     display: block;
     padding: 0.5em;
     border: solid 1px lightgrey;   
@@ -29,7 +30,6 @@ style {
 }
 
 #side-styles {
-    /* <style id="side-styles" contentenditable> */   
     height: 100vh;
     width: var(--CSS-width);
     position: fixed;
@@ -38,6 +38,7 @@ style {
     overflow-y: scroll;
 }
 
+/*
 h1 {
     font-size: 10rem;
 }
@@ -53,26 +54,30 @@ h1 {
     align-content: center;
     justify-content: center;
 }
+*/
 
 
 /* --- */
 
 
+/*
 .slide:first-of-type {
     counter-reset: slide;
 }
 .slide::after {
     counter-increment: slide;
-    /* content: "Slide " counter(slide); */
+    content: "Slide " counter(slide);
     font-size: 1em;
     position: absolute;
     bottom: 1em;
 }
+*/
 
 
 /* --- */
 
 
+/*
 h2 {
     font-size: 3em;
     position: absolute;
@@ -81,7 +86,7 @@ h2 {
 
 div {
     border: 1px solid black;
-    /* padding: 1em; */
+    padding: 1em; Comment out in a bit;
     margin: 1em;
     min-width: 5em;
     overflow: visible;
@@ -101,7 +106,9 @@ div {
 #checkbox-demo::before {
     content: "div#checkbox-demo"
 }
+*/
 
+/*
 #checkbox1:checked {
     outline: 3px solid red;
 }
@@ -112,19 +119,25 @@ label {
     width: 100%;
     text-align: center;
 }
+*/
 
-/* div:has(input:checked) {
+/*
+div:has(input:checked) {
    background: lightgrey; 
-} */
+}
+*/
 
-/* input[type="checkbox"] {
+/*
+input[type="checkbox"] {
     display: none;
-} */
+}
+*/
 
 
 /* --- */
 
 
+/*
 #checkboxA::before {
     content: "div#checkboxA";
 }
@@ -144,6 +157,7 @@ label {
     height: 0;
     flex-basis: 100%;
 }
+*/
 
 /*
 div input + label::after {
@@ -166,12 +180,16 @@ div#checkboxA:has(input:checked) , div#checkboxB:has(input:checked) {
         content: "1";
     }
 }
+div#checkboxA:has(input:checked) ~ div#checkboxB:has(input:checked) ~ div#A-xor-B label::after {
+    content: "0";
+}
 */
 
 
 /* --- */
 
 
+/*
 .recursionA::before {
     content: "div.recursionA";
 }
@@ -181,16 +199,20 @@ div#checkboxA:has(input:checked) , div#checkboxB:has(input:checked) {
 .recursion {
     display: inline-block;
 }
+*/
 
+/*
 .slide:has(.recursion) {
     --i: 0;
     --b: -1;
 }
+*/
 /*
 .recursion::after {
     content: var(--i);
 }
 */
+/*
 .recursionA {
     --a: var(--b) + 1;
     --i: var(--a);
@@ -205,15 +227,17 @@ div#checkboxA:has(input:checked) , div#checkboxB:has(input:checked) {
     counter-reset: counter-i calc(var(--i))
         counter-a calc(var(--a))
         counter-b calc(var(--b));
-    /* content: "i = " counter(counter-i, decimal) "; a = " counter(counter-a, decimal) "; b = " counter(counter-b, decimal); */
+    content: "i = " counter(counter-i, decimal) "; a = " counter(counter-a, decimal) "; b = " counter(counter-b, decimal); Comment out;
 }
+*/
 
 
 /* --- */
 
 
 #adder {
-    /* visibility: hidden; */
+visibility: hidden;
+/*
 #first-number::before {
     content: "div#first-number";
 }
@@ -223,7 +247,9 @@ div#checkboxA:has(input:checked) , div#checkboxB:has(input:checked) {
 #output::before {
     content: "div#output";
 }
+*/
 
+/*
 .number {
     height: 7em;
     flex-basis: 100%;
@@ -237,9 +263,12 @@ div div {
     width: 5em;
     height: 5em;
     &::after {
-        /* content: counter(counter-i, decimal); */
+        content: counter(counter-i, decimal); comment out;
     }
 }
+*/
+
+/*
 #first-number {
     --value: var(--n1);
 }
@@ -248,6 +277,9 @@ div div {
 }
 #output {
     --value: calc(var(--n1) + var(--n2));
+}
+#operation:has(:checked) ~ #output {
+    --value: calc(var(--n1) - var(--n2));
 }
 div div::after {
     --result: mod(round(down, var(--value) / pow(2, 7 - (var(--i))), 1), 2);
@@ -261,15 +293,31 @@ div div::after {
     align-content: center;
 }
 
-#operation {
-    height: 5em;
+#operation input ~ label::after {
+    content: "+";
 }
+#operation:has(:checked) {
+    background: white;
+}
+#operation input:checked ~ label::after {
+    content: "-";
+}
+*/
 }
 </style>
 
 
 <section class="slide" tabindex="0">
 <h1>CSS Crimes</h1>
+</section>
+
+<section class="slide" tabindex="0">
+    <h2>What we will cover:</h2>
+    <ul>
+        <li>State & Checkboxes</li>
+        <li>Recursion</li>
+        <li>Making a Binary Calculator</li>
+    </ul>
 </section>
 
 <section class="slide" tabindex="0">
@@ -312,9 +360,7 @@ div div::after {
 <section class="slide" id="adder" tabindex="0">
     <h2>Binary Adder</h2>
 
-    <style contenteditable>
-* { --n1: 15; --n2: 17; }
-    </style>
+    <style contenteditable>* { --n1: 15; --n2: 17; }</style>
     <div id="operation">
         <input type="checkbox" id="checkbox4" tabindex="-1">
         <label for="checkbox4"></label>
